@@ -1,0 +1,159 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.17.8"
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "d9415c1730937c7f5073e4929d22393e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"telco-churn-baseline-logistic-regression\">Telco churn \u2013 baseline logistic regression</h1>\n<span class=\"paragraph\">Edit the constants below, run the notebook top-to-bottom, and inspect the metrics.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "setup",
+      "code_hash": "9af3b717a2d0589504e720f0dc613fa0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "e9ffd1598c396d39e47ce40bd3c00dd6",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "4d5fcb779c02e911fa91157a185bf7d9",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='vblA-0' random-id='30bbfaaa-9408-02a8-de4c-e06a95255ea2'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;customerID&#92;&quot;:&#92;&quot;7590-VHVEG&#92;&quot;,&#92;&quot;gender&#92;&quot;:&#92;&quot;Female&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;tenure&#92;&quot;:1,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;No phone service&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;DSL&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;Month-to-month&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;Electronic check&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:29.85,&#92;&quot;TotalCharges&#92;&quot;:&#92;&quot;29.85&#92;&quot;,&#92;&quot;Churn&#92;&quot;:&#92;&quot;No&#92;&quot;},{&#92;&quot;customerID&#92;&quot;:&#92;&quot;5575-GNVDE&#92;&quot;,&#92;&quot;gender&#92;&quot;:&#92;&quot;Male&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;tenure&#92;&quot;:34,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;DSL&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;One year&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;Mailed check&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:56.95,&#92;&quot;TotalCharges&#92;&quot;:&#92;&quot;1889.5&#92;&quot;,&#92;&quot;Churn&#92;&quot;:&#92;&quot;No&#92;&quot;},{&#92;&quot;customerID&#92;&quot;:&#92;&quot;3668-QPYBK&#92;&quot;,&#92;&quot;gender&#92;&quot;:&#92;&quot;Male&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;tenure&#92;&quot;:2,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;DSL&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;Month-to-month&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;Mailed check&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:53.85,&#92;&quot;TotalCharges&#92;&quot;:&#92;&quot;108.15&#92;&quot;,&#92;&quot;Churn&#92;&quot;:&#92;&quot;Yes&#92;&quot;},{&#92;&quot;customerID&#92;&quot;:&#92;&quot;7795-CFOCW&#92;&quot;,&#92;&quot;gender&#92;&quot;:&#92;&quot;Male&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;tenure&#92;&quot;:45,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;No phone service&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;DSL&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;One year&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;Bank transfer (automatic)&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:42.3,&#92;&quot;TotalCharges&#92;&quot;:&#92;&quot;1840.75&#92;&quot;,&#92;&quot;Churn&#92;&quot;:&#92;&quot;No&#92;&quot;},{&#92;&quot;customerID&#92;&quot;:&#92;&quot;9237-HQITU&#92;&quot;,&#92;&quot;gender&#92;&quot;:&#92;&quot;Female&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;tenure&#92;&quot;:2,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;Fiber optic&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;No&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;Month-to-month&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;Yes&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;Electronic check&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:70.7,&#92;&quot;TotalCharges&#92;&quot;:&#92;&quot;151.65&#92;&quot;,&#92;&quot;Churn&#92;&quot;:&#92;&quot;Yes&#92;&quot;}]&quot;' data-total-rows='5' data-total-columns='21' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;customerID&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;gender&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;SeniorCitizen&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;Partner&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;Dependents&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;tenure&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;PhoneService&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;MultipleLines&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;InternetService&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;OnlineSecurity&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;OnlineBackup&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;DeviceProtection&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;TechSupport&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;StreamingTV&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;StreamingMovies&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;Contract&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;PaperlessBilling&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;PaymentMethod&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;MonthlyCharges&quot;,[&quot;number&quot;,&quot;float64&quot;]],[&quot;TotalCharges&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;Churn&quot;,[&quot;string&quot;,&quot;object&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "b6f8c51eb2dc2289bfadcb23419a5a2b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "5dfd4e5953fc62caf5c52361fe7c4916",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='lEQa-0' random-id='901dbeae-d61e-e192-4330-42ba30a28d80'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;&#92;&quot;:0,&#92;&quot;gender&#92;&quot;:&#92;&quot;female&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;tenure&#92;&quot;:1,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;no phone service&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;dsl&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;month-to-month&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;electronic check&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:29.85,&#92;&quot;TotalCharges&#92;&quot;:29.85,&#92;&quot;Churn&#92;&quot;:&#92;&quot;no&#92;&quot;},{&#92;&quot;&#92;&quot;:1,&#92;&quot;gender&#92;&quot;:&#92;&quot;male&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;tenure&#92;&quot;:34,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;dsl&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;one year&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;mailed check&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:56.95,&#92;&quot;TotalCharges&#92;&quot;:1889.5,&#92;&quot;Churn&#92;&quot;:&#92;&quot;no&#92;&quot;},{&#92;&quot;&#92;&quot;:2,&#92;&quot;gender&#92;&quot;:&#92;&quot;male&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;tenure&#92;&quot;:2,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;dsl&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;month-to-month&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;mailed check&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:53.85,&#92;&quot;TotalCharges&#92;&quot;:108.15,&#92;&quot;Churn&#92;&quot;:&#92;&quot;yes&#92;&quot;},{&#92;&quot;&#92;&quot;:3,&#92;&quot;gender&#92;&quot;:&#92;&quot;male&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;tenure&#92;&quot;:45,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;no phone service&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;dsl&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;one year&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;bank transfer (automatic)&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:42.3,&#92;&quot;TotalCharges&#92;&quot;:1840.75,&#92;&quot;Churn&#92;&quot;:&#92;&quot;no&#92;&quot;},{&#92;&quot;&#92;&quot;:4,&#92;&quot;gender&#92;&quot;:&#92;&quot;female&#92;&quot;,&#92;&quot;SeniorCitizen&#92;&quot;:0,&#92;&quot;Partner&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;Dependents&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;tenure&#92;&quot;:2,&#92;&quot;PhoneService&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;MultipleLines&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;InternetService&#92;&quot;:&#92;&quot;fiber optic&#92;&quot;,&#92;&quot;OnlineSecurity&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;OnlineBackup&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;DeviceProtection&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;TechSupport&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;StreamingTV&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;StreamingMovies&#92;&quot;:&#92;&quot;no&#92;&quot;,&#92;&quot;Contract&#92;&quot;:&#92;&quot;month-to-month&#92;&quot;,&#92;&quot;PaperlessBilling&#92;&quot;:&#92;&quot;yes&#92;&quot;,&#92;&quot;PaymentMethod&#92;&quot;:&#92;&quot;electronic check&#92;&quot;,&#92;&quot;MonthlyCharges&#92;&quot;:70.7,&#92;&quot;TotalCharges&#92;&quot;:151.65,&#92;&quot;Churn&#92;&quot;:&#92;&quot;yes&#92;&quot;}]&quot;' data-total-rows='5' data-total-columns='20' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;gender&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;SeniorCitizen&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;Partner&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;Dependents&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;tenure&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;PhoneService&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;MultipleLines&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;InternetService&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;OnlineSecurity&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;OnlineBackup&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;DeviceProtection&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;TechSupport&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;StreamingTV&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;StreamingMovies&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;Contract&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;PaperlessBilling&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;PaymentMethod&quot;,[&quot;string&quot;,&quot;object&quot;]],[&quot;MonthlyCharges&quot;,[&quot;number&quot;,&quot;float64&quot;]],[&quot;TotalCharges&quot;,[&quot;number&quot;,&quot;float64&quot;]],[&quot;Churn&quot;,[&quot;string&quot;,&quot;object&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[[&quot;&quot;,[&quot;integer&quot;,&quot;int64&quot;]]]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Available features after encoding: ['SeniorCitizen', 'tenure', 'MonthlyCharges', 'TotalCharges', 'gender_male', 'Partner_yes', 'Dependents_yes', 'PhoneService_yes', 'MultipleLines_no phone service', 'MultipleLines_yes', 'InternetService_fiber optic', 'InternetService_no', 'OnlineSecurity_no internet service', 'OnlineSecurity_yes', 'OnlineBackup_no internet service', 'OnlineBackup_yes', 'DeviceProtection_no internet service', 'DeviceProtection_yes', 'TechSupport_no internet service', 'TechSupport_yes', 'StreamingTV_no internet service', 'StreamingTV_yes', 'StreamingMovies_no internet service', 'StreamingMovies_yes', 'Contract_one year', 'Contract_two year', 'PaperlessBilling_yes', 'PaymentMethod_credit card (automatic)', 'PaymentMethod_electronic check', 'PaymentMethod_mailed check']\nSelected features for modeling: ['tenure', 'MonthlyCharges', 'TechSupport_yes']\nChosen features: ['tenure', 'MonthlyCharges', 'TechSupport_yes']\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "PKri",
+      "code_hash": "474d24d545d4715104e4318d197e4cc8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "f19d9645ddf6cf06c8955df6844e5a6e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[[928 105]\n [194 180]]\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "3bbfb226f71f2b7bc1918b8a18568375",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "              precision    recall  f1-score   support\n\n           0       0.83      0.90      0.86      1033\n           1       0.63      0.48      0.55       374\n\n    accuracy                           0.79      1407\n   macro avg       0.73      0.69      0.70      1407\nweighted avg       0.78      0.79      0.78      1407\n\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "fc9cd3d8786b6f09c8cc416e2d14ec35",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}
