@@ -1,5 +1,8 @@
-import azure.functions as func
 import logging
+
+import azure.functions as func
+
+from prediction import make_prediction
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
@@ -7,19 +10,18 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 def predict(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
+    tenure = req.params.get('tenure')
+    monthly = req.params.get('monthly')
+    techsupport = req.params.get('techsupport')
+    
+    prediction = make_prediction(tenure=tenure, 
+                                 MonthlyCharges=monthly, 
+                                 TechSupport_yes=techsupport)
 
-    if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
+    if tenure and monthly and techsupport:
+        return func.HttpResponse(f"The Customer will churn with probability {prediction}.")
     else:
         return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
+             "You have not provided the required parameters to make a prediction.",
              status_code=200
         )
